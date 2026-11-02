@@ -1,0 +1,11 @@
+.build/
+dist/
+.DS_Store
+*.xcuserstate
+*.xcuserdata/
+local-audio/
+__pycache__/
+.env
+.env.*
+.envrc
+.hq/
