@@ -1,0 +1,26 @@
+{
+  "checks" : {
+    "above_normal_windows" : true,
+    "available_in_spaces_and_fullscreen" : true,
+    "gear_settings_window_opens" : true,
+    "hiding_widget_does_not_stop_recording" : true,
+    "language_settings_can_change_while_idle" : true,
+    "language_settings_cannot_change_during_recording" : true,
+    "language_settings_cannot_change_while_queue_drains" : true,
+    "menu_bar_button_opens_widget" : true,
+    "moving_panel_saves_position" : true,
+    "no_standard_window_chrome" : true,
+    "reopening_keeps_position" : true,
+    "second_menu_bar_click_hides_widget" : true,
+    "starts_with_no_main_window" : true,
+    "stays_visible_when_app_deactivates" : true,
+    "test_does_not_load_keychain" : true,
+    "third_menu_bar_click_reopens_widget" : true,
+    "widget_is_visible_after_actual_deactivation" : true,
+    "widget_remains_visible_with_settings_open" : true
+  },
+  "note" : "Only current-process windows are captured. No microphone, network, credentials, or desktop capture.",
+  "panelHeight" : 420,
+  "panelWidth" : 340,
+  "passed" : true
+}

@@ -1,206 +1,113 @@
+<p align="center"><img src="assets/brand/social-preview.png" alt="Voxtant — Your live interpreter" width="100%"></p>
+
+<p align="center"><strong>English</strong> · <a href="README.ru.md">Русский</a></p>
+
 # Voxtant
 
-*Your live interpreter.*
+**Keep listening. Read the translation.**
 
-Voxtant — персональный синхронный переводчик для macOS. Он слушает живую речь
-через микрофон и постепенно показывает перевод. Продукт задуман для разговоров,
-встреч, лекций и выступлений; универсальная поддержка языков — направление развития.
+A small native macOS app that turns microphone speech into translated text in a floating glass panel. Open it from the menu bar, move it beside your work, and keep the conversation in view.
 
-Текущая демка проверяет путь **микрофон → OpenRouter ASR → русский перевод**.
-Первый реализованный сценарий — английские объяснения с китайскими вставками:
-английский переводится, а распознанные китайские иероглифы сохраняются.
-Аудио обрабатывается короткими фрагментами: непрерывного потокового ASR пока нет.
+[macOS 14+](#get-started) · [MIT](LICENSE) · [Swift / SwiftUI](Package.swift) · **Experimental pet project**
 
-**Статус на 2026-11-02:** пользователь подтвердил, что улучшенная демка работает
-достаточно хорошо, чтобы продолжать проект. Базовая техническая осуществимость
-подтверждена короткими живыми прогонами. Это не приёмка полного MVP: точность
-китайского, длинная сессия и устойчивость API остаются открытыми.
+<p align="center"><img src="docs/screenshots/widget.png" alt="Voxtant floating translation panel with demonstration text" width="340"></p>
 
-## Запуск
+## What it does
 
-Нужны macOS 14+, установленный Xcode / Swift 6 и ключ OpenRouter с балансом.
-Внешних зависимостей, серверов и dev-stack нет.
+- A persistent, draggable, resizable panel above your other apps; menu-bar access and a separate settings window.
+- Single-language translation or mixed speech with a translate/preserve rule for each source language.
+- Scribe v2 or GPT Transcribe for recognition; GPT‑4.1 mini is the recommended translator. **One OpenRouter key.**
+- Progressive translation previews. Stop cancels queued and active processing immediately, then finishes only the local audio write.
+- Original audio, transcript, translation and session metadata saved on your Mac, grouped by date and recording.
+- A quiet API-reported USD subtotal and approximate RUB conversion using a dated CBR rate. Missing prices remain unknown.
 
-```sh
-make dev
-```
+The initial use case is an English lecture with Mandarin examples: translate the explanation into Russian while keeping recognized Chinese characters. The app preserves the Chinese it recognized; it cannot guarantee that recognition itself is correct.
 
-Открывается `dist/Voxtant.app`. Введите ключ в поле приложения и
-нажмите «Сохранить в Keychain». Не кладите ключ в код, файлы конфигурации или чат.
-При первом Start разрешите доступ к микрофону в диалоге macOS.
+## Get started
 
-1. Выберите микрофон, нажмите Start и произнесите несколько фраз на английском с китайскими примерами.
-2. Следите за уровнем микрофона, исходным текстом, переводом и очередью.
-3. Нажмите Stop: запись завершается, накопившаяся очередь дорабатывается.
-4. При необходимости отмените запросы, затем повторите неудачные сегменты.
-5. Save копирует всю сессию в выбранную папку. «Папка сессии» открывает рабочие файлы.
+**To run:** macOS 14+, a microphone, internet access and your own OpenRouter key with credit. The current packaged build is **arm64 / Apple Silicon**. The interface is currently in Russian; the repository documentation is bilingual.
 
-Для повторяемого сравнения моделей можно выбрать «Аудиофайл…».
-Это пакетная обработка, а не измерение задержки живого микрофона.
-При низком уровне речи настройте порог в «Подключение»: более отрицательное значение
-чувствительнее к тихой речи и фоновому шуму. Значение по умолчанию −48 dBFS.
+1. Get the application from [Releases](https://github.com/JustChimera/Voxtant/releases), or build it below. Move `Voxtant.app` into Applications.
+2. Open the app and click the waveform in the macOS menu bar. Open Settings with the gear.
+3. Save your OpenRouter key, choose a microphone, then start recording. Allow microphone access when macOS asks.
+4. Use Stop to end capture and cancel unfinished requests. Hiding the panel keeps recording active.
 
-## Проверка гипотезы
+Release packages are **ad-hoc signed, not Developer ID signed or notarized**. macOS may block a downloaded copy. If you trust its source, use Apple's [instructions for opening an unverified app](https://support.apple.com/102445); do not disable system-wide protection.
 
-Модели по умолчанию:
+Native Liquid Glass requires macOS 26+. Earlier supported systems use an AppKit material. The panel's appearance depends on the desktop and accessibility settings.
 
-- ASR: `qwen/qwen3-asr-1.7b`;
-- перевод: `google/gemini-2.5-flash-lite`.
+## Language rules
 
-Имена можно изменить перед следующей сессией через «Подключение».
-В меню «Режим» рядом с ASR доступны быстрый Qwen и `google/gemini-2.5-flash`
-для сравнения китайской речи. Gemini получает аудио через `chat/completions`
-с контекстом урока и предыдущих доступных реплик. Он обычно медленнее Qwen;
-распознавание иероглифами не гарантирует правильность распознанных слов.
-Все запросы идут через `https://openrouter.ai/api/v1/`.
-Qwen ASR использует `audio/transcriptions`, перевод — `chat/completions`.
-Язык ASR не фиксируется как английский: это помешало бы смешанной речи.
+Choose **Single** for one source → one target, or **Mixed** for several source languages. In mixed mode, untick translation for a language you want to keep in the original writing system. An optional recognition language hint is independent of the translation target.
 
-Начните с 2–3 минут речи: обычные объяснения, быстрые предложения, паузы,
-отдельные китайские слова и повторы одного примера. Затем попробуйте 10–15 минут.
-Сравнивайте оригинальную запись, ASR и перевод: переводчик не может восстановить
-иероглифы, потерянные на этапе ASR.
+English, Mandarin, Russian, German, French, Spanish, Italian, Portuguese, Japanese and Korean are configurable. Equal recognition/translation quality across these languages has not been established.
 
-Интерфейс показывает ASR и перевод в секундах, очередь и P50/P95 задержки **от конца
-аудиофрагмента до готового перевода**. К этому добавляется ожидание границы фрагмента
-во время произнесения фразы: это не обещание задержки от каждого слова.
-Стоимость показывается только при наличии данных API. `+ ?` означает неполные данные.
-Отсутствующая стоимость не означает бесплатный запрос. Повторные запросы оплачиваются отдельно.
-
-## Сохранение
-
-Сессии автоматически остаются в:
+## Your recordings and data
 
 ```text
-~/Library/Application Support/LectureTranslateDemo/Sessions/Lecture_<date>_<id>/
+~/Desktop/Voxtant Recordings/
+└── 2026-11-03/
+    └── 14-30-00_A1B2C3D4/
+        ├── recording.caf
+        ├── transcript.txt
+        ├── translation.txt
+        ├── metadata.json
+        ├── session.json
+        └── chunks/*.wav
 ```
 
-- `recording.caf` — непрерывная исходная запись, независимо от API;
-- `chunks/*.wav` — фрагменты mono 16 kHz PCM16, включая неудачные;
-- `transcript.txt` — распознанный оригинал;
-- `translation.txt` — готовый перевод;
-- `session.json` — порядок, границы, модели, статусы, ошибки, задержки и доступная стоимость.
+The API key is stored in **macOS Keychain**, never bundled with the app. During recognition, audio fragments go to OpenRouter and the selected ASR provider; text goes to the selected translation provider through OpenRouter. API usage is billed to your account. The app does not implement its own backend, accounts, telemetry or cloud library. A public CBR request supplies the optional currency reference.
 
-Для импорта вместо `recording.caf` сохраняется копия выбранного исходного файла.
-JSON и тексты обновляются атомарно по мере обработки. После сбоя файлы остаются
-на диске; автоматического восстановления очереди в интерфейсе в этой демке нет.
-Ключ в экспорт не попадает.
-Для совместимости с первой демкой сохранены технический bundle ID
-`local.lecturetranslate.demo`, сервис Keychain и прежнее имя папки сессий.
-Переименование приложения не требует переноса записей или повторного ввода ключа
-при сохранённом доступе macOS Keychain.
-В схеме JSON v2 сохраняются время очереди, старта ASR, готовности оригинала,
-старта перевода, показа результата и журнал каждой попытки HTTP с кодом,
-длительностью, ID запроса, провайдером и `Retry-After`, когда они доступны.
+No personal recordings or private evaluation corpus are included in this repository. Screenshots use authored demonstration text. Record with the participants' knowledge and according to the rules that apply to your situation.
 
-## Границы демки
+Plain TXT/JSON exports can be consumed by your own tools or agents. See [local agent integration](docs/agent-integration.md). No server or MCP service is required.
 
-- Фрагменты обычно 1.2–2.8 секунды, завершаются на паузе или на предельной длине.
-  Перед началом речи оставляется 120 мс звука; длительная тишина в API не уходит.
-- Копии WAV для ASR нормализуются до пика 0.8 с усилением не выше 8×.
-  Это не удаление шума. Исходная непрерывная запись не изменяется.
-- Простой энергетический детектор речи, без нейронного VAD.
-- Без перекрытия и текстового удаления дублей: сохраняются намеренные повторы.
-  На принудительной границе возможны разрезанные слова — это предмет проверки ASR.
-- До двух ASR-запросов и двух переводов параллельно; ячейки и экспорт остаются
-  в порядке аудио. Один неудачный запрос больше не блокирует перевод следующих ячеек.
-  Контекст — до трёх доступных предыдущих реплик, без последующих.
-- Таймаут попытки — до 8 секунд; максимум 3 попытки в бюджете до 20 секунд.
-  HTTP 408/429/500/502/503/504 и некоторые сетевые сбои повторяются с паузой.
-  `Retry-After` соблюдается: если пауза не укладывается в live-бюджет,
-  сегмент остаётся ошибочным для ручного повтора. Ошибки ключа/баланса не повторяются.
-- Полностью китайская реплика проходит без переводчика, с точным сохранением текста.
-  В смешанной реплике китайские фрагменты заменяются защищёнными токенами и
-  восстанавливаются кодом. Проверяются потери, повторы, порядок и добавленные
-  иероглифы; при нарушении — один повтор валидации. Это защищает ASR-текст,
-  но не исправляет ошибки самого ASR и не доказывает смысловую точность перевода.
-- При ошибках сети запись продолжается; ошибки можно повторить после Stop.
-- Исходник сохраняется в CAF, а не M4A: для демки выбран простой несжатый формат.
-  При 48 kHz Float32 это около 0.7 GB/час на канал. Проверяйте свободное место.
-- 60–90-минутная устойчивость, качество на настоящей лекции, реальная стоимость
-  и целевая задержка 3–5 секунд требуют живого прогона. Сборка и unit-тесты этого не доказывают.
-- Подпись приложения локальная (ad hoc), распространение и notarization не настроены.
+## Build and develop
 
-## Разработка
+**Build tools:** Xcode 26+ with the macOS 26 SDK, Swift 6 toolchain, Python 3 and the macOS command-line tools. There are no external Swift package dependencies. Source builds use the host architecture; Intel builds and older OS versions have not been validated on this development machine.
 
 ```sh
-make build                    # Собрать .app
-make test                     # Локальные тесты, без API и микрофона
-make test-one FILTER=CoreTests/testChineseGuardChecksOrderAndRepetitions
-make lint                     # Проверить plist и shell syntax
-make typecheck                # Swift build
-make verify                   # Тесты, проверки, сборка .app
+git clone https://github.com/JustChimera/Voxtant.git
+cd Voxtant
+make dev       # Debug app, then open it
+make verify    # Local Swift/Python tests, lint and debug build
+make ui-smoke  # GUI checks with fixtures; no microphone, keys or paid APIs
+make release   # Optimized app, ZIP, DMG and SHA256SUMS.txt in dist/releases/
+make install   # Release build → ~/Applications/Voxtant.app; refuses overwrite
 ```
 
-`Sources/LectureCore` содержит сегментацию, WAV, API и структуры отчёта.
-`Sources/LectureTranslate` — SwiftUI, Keychain, захват и оркестрацию.
-Тесты проверяют границы аудио, хвост Stop, тишину, WAV, сохранение иероглифов,
-формат ASR-запроса, повтор повреждённого перевода и HTTP 429 на HTTP-заглушке.
+`make verify` never runs a paid model evaluation. Recordings, `.build`, `dist`, local configuration and credentials stay outside Git. Keep changes small; see [Contributing](CONTRIBUTING.md).
 
-Источники контракта API: [OpenRouter Speech-to-Text](https://openrouter.ai/docs/guides/overview/multimodal/stt),
-[Qwen3 ASR 1.7B](https://openrouter.ai/qwen/qwen3-asr-1.7b),
-[Audio input](https://openrouter.ai/docs/guides/overview/multimodal/audio),
-[Errors / Retry-After](https://openrouter.ai/docs/api/reference/errors-and-debugging).
+## How it works
 
-## Разбор первого живого прогона — 2026-11-02
+```text
+Microphone ──┬── Original CAF → local disk
+             └── 1.2–2.8 s WAV → local speech gate → OpenRouter ASR
+                                                      ↓
+                                            Language / Chinese guards
+                                                      ↓
+                                              OpenRouter translation
+                                                      ↓
+                                         Floating panel + TXT / JSON
+```
 
-Сессия `Lecture_2026-11-02_16-31-02_C33EE8`: 61.8 секунды, 13 речевых сегментов,
-10 готовых переводов, 2 HTTP 429 на этапе перевода и 1 ошибка проверки иероглифов.
-Таймаутов в этой сессии не записано. ASR P50 около 1.44 с, перевод P50 около
-0.64 с. Старая общая метрика P50 5.41 с содержит почти постоянное смещение
-3.25–3.30 с сверх времени двух API: она вычислялась от приблизительного старта
-движка. В новой версии используется host time входного буфера. Исправление метрики
-само по себе не означает ускорение; результат следующего live-прогона приведён ниже.
+Audio capture and disk writing run independently of networking. The scheduler has two recognition and two translation slots. Chinese protection checks character order and repetitions where applicable; it does not invent missing characters. Translation previews stream, while final exports require a validated completed response.
 
-Исходная запись без клиппинга, но тихая: общий RMS −43.6 dBFS, на проблемных
-фрагментах примерно −40…−48 dBFS, пики −26…−29 dBFS. Это обосновывает снижение
-стартового порога и ограниченное усиление ASR-копий; их влияние на точность
-нужно проверить повторно. Речь не проходила ручную эталонную расшифровку.
+## Honest limits
 
-С явного разрешения пользователя выполнено 6 повторных запросов на трёх сохранённых
-проблемных фрагментах. Результаты и стоимость API: [benchmark-raw.json](docs/benchmark-raw.json).
-Gemini Flash: 2.50–3.34 с; Flash Lite: 3.00–3.42 с. Суммарная сообщённая стоимость
-сравнения $0.0005983. Это маленький последовательный тест через Python HTTP,
-а не контролируемый benchmark скорости относительно прежнего URLSession-прогона.
+- This is **short-fragment, near-real-time processing**, not continuous streaming ASR. There is no latency SLA.
+- Noise, accents, mixed languages and chunk boundaries can produce wrong or missing words. A fluent translation is not proof of a correct transcript.
+- Long 60–90 minute sessions and every microphone/OS/language combination are not certified. An iPhone microphone must first be exposed by macOS Continuity.
+- Stop retains completed text and original audio; unfinished translations are cancelled rather than drained.
+- Human-verified real-lecture accuracy is not established. Synthetic script regression checks, machine-derived comparisons and Han retention are reported separately.
+- Prices depend on the chosen route; interrupted or missing API billing makes the displayed amount incomplete. RUB is approximate.
 
-На одном смешанном фрагменте Qwen выдал `For example, washy, laushy, nishy.`,
-Gemini Flash — `For example, 我是老师, 你是`, а Flash Lite — другую китайскую фразу.
-На следующем фрагменте получены три разных варианта (`修身`, pinyin, `修生`).
-Flash выглядит полезным кандидатом, но без эталона нельзя рассчитать WER/CER
-или объявить китайское распознавание решённым. Gemini Flash Lite как ASR
-по этому тесту не выбран.
+## Engineering notes
 
-Сравнение можно повторить вручную: `python3 scripts/benchmark.py` (реальные платные
-запросы и повторная отправка аудио; не входит в `make verify`). Ключ читается
-из Keychain в память и не записывается в отчёт. Не запускайте во время записи:
-скрипт по умолчанию выбирает последнюю сессию.
+[ASR selection](docs/asr-selection.md) · [Translator comparison](docs/translation-selection.md) · [Quality regression](docs/quality-regression.md) · [Validation tools](docs/validation.md) · [Recording library](docs/recording-library.md) · [Stop contract](docs/stop-behavior.md) · [Release notes](CHANGELOG.md)
 
-## Контрольная версия после исправлений — 2026-11-02
+The project explores native macOS interaction, microphone/device lifecycle, concurrent API work, cancellation, multilingual text protection and repeatable evaluation. It is open for inspection and contributions, without a production-readiness claim.
 
-Сессия `Lecture_2026-11-02_16-55-34_52A624`, схема JSON v2:
+## License
 
-- Запись 45.2 с, 17 отправленных фрагментов, все завершены без ошибок API.
-  В 10 получен непустой текст, в 7 ASR вернул пустой результат. Это могут быть
-  ложные срабатывания простого VAD или пропуски ASR; без сверки аудио причина не установлена.
-- ASR — `qwen/qwen3-asr-1.7b`: медиана 1.47 с, максимум 2.43 с.
-- Для 10 непустых реплик от конца аудиофрагмента до готового результата:
-  медиана 1.97 с, максимум 3.10 с.
-  Время накопления самого фрагмента добавляется к ожиданию от начала речи.
-- Медиана времени перевода — 0 с, поскольку полностью китайские реплики
-  проходят локально без переводчика: 6 китайских реплик и 4 запроса к переводчику.
-  Это не скорость текстовой LLM.
-- В журнале 21 API-попытка без ошибок; суммарная сообщённая стоимость $0.00040015.
-
-Пользователь оценил демку как работающую лучше и подтвердил переход к созданию
-репозитория. Эта версия сохраняется как начальная рабочая точка проекта.
-Распознанные китайские слова не сверялись с ручным эталоном; отсутствие ошибок
-обработки не означает отсутствие ошибок распознавания.
-
-Для старого и нового прогона использовались разные способы измерения общей
-задержки, поэтому сравнение 5.41 с и 1.97 с не доказывает ускорение в 2.7 раза.
-Фактическое сокращение ожидания достигается короткими фрагментами, параллельной
-обработкой и обходом переводчика для китайской речи.
-
-## Лицензия
-
-[MIT License](LICENSE). Copyright (c) 2026 Egor Logutov.
+[MIT](LICENSE). Build it, modify it and use it in your own projects. Model API access and its charges are separate from this license. [Brand assets and generation provenance](assets/brand/README.md).
