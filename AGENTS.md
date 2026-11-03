@@ -36,6 +36,7 @@ Voxtant — нативная macOS-демка персонального син�
 `Makefile` — канонический исполняемый интерфейс. Нужен установленный Xcode/Swift; отдельного install target и внешних зависимостей нет.
 
 - Build: `make build` → debug `dist/Voxtant.app`; `make release` → optimized native-architecture app plus ZIP/DMG/checksums in `dist/releases/`; `make install` builds a release and copies to `~/Applications/Voxtant.app` only when that path does not already exist. No automatic overwrite/quit. Release assets use an ad-hoc signature; Developer ID/notarization is not configured.
+- Publication privacy: benchmark outputs must be explicitly outside this repo; no raw private transcripts in docs. Release builds map project source prefixes and strip debug metadata before signing. Deleting a file does not scrub Git history; never force-push/rewrite published history without explicit authorization.
 - Branding: `assets/brand/app-icon.png` → `scripts/build-icon.sh` → cached native `.icns` copied into the bundle; original generated PNG and cover provenance/prompts live under `assets/brand/`. Build requires Xcode 26+ (macOS 26 SDK for Liquid Glass), runtime deployment target remains macOS 14. No ASR/translation behavior changes in release packaging.
 - Dev: `make dev`.
 - Test all: `make test` · Test one: `make test-one FILTER=CoreTests/testChineseGuardChecksOrderAndRepetitions`.

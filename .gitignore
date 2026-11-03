@@ -9,3 +9,6 @@ __pycache__/
 .env.*
 .envrc
 .hq/
+
+# Legacy private benchmark output must never be published.
+/docs/benchmark-raw.json

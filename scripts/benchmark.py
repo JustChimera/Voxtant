@@ -12,10 +12,14 @@ import urllib.request
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--session", type=pathlib.Path)
-    parser.add_argument("--output", type=pathlib.Path, default=pathlib.Path("docs/benchmark-raw.json"))
+    parser.add_argument("--output", type=pathlib.Path, required=True)
     parser.add_argument("--models", nargs="+", default=["google/gemini-2.5-flash-lite", "google/gemini-2.5-flash"])
     parser.add_argument("--ids", nargs="+", type=int, default=[6, 10, 11])
     args = parser.parse_args()
+    args.output = args.output.expanduser().resolve()
+    repository = pathlib.Path(__file__).resolve().parent.parent
+    if args.output.is_relative_to(repository):
+        parser.error("Private benchmark output must be outside the repository.")
     root = pathlib.Path.home() / "Library/Application Support/LectureTranslateDemo/Sessions"
     folder = args.session or max(root.glob("*/session.json"), key=lambda p: p.stat().st_mtime).parent
     report = json.loads((folder / "session.json").read_text())
