@@ -37,10 +37,10 @@ word-level human reference exists. The cases were selected because they failed;
 they cannot estimate general real-world accuracy. Four Chinese-role clips, one
 English control and one historical outro control form this small diagnostic panel.
 
-On one clip GPT changed `Ниши лавшима.` to `你是老师吗？` with zh. Other outputs still
-contained wrong/unverified characters. Scribe auto produced `你好，你是李老师吗？`
-where zh produced `你好，你是老水吗？`; the hint is not uniformly better. One GPT
-profile stayed in English despite zh. Do not infer success merely from Han presence.
+Some hints changed the writing system without correcting the words; one Scribe
+wording became less plausible. One GPT profile remained in English despite zh.
+Verbatim private-pilot outputs are intentionally omitted. Do not infer success
+merely from Han presence.
 
 Both models retained the English control with zh. One short English example does
 not justify forcing Chinese globally. Scribe returned empty text on the historical

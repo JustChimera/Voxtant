@@ -17,7 +17,7 @@ A small native macOS app that turns microphone speech into translated text in a 
 - A persistent, draggable, resizable panel above your other apps; menu-bar access and a separate settings window.
 - Single-language translation or mixed speech with a translate/preserve rule for each source language.
 - Scribe v2 or GPT Transcribe for recognition; GPT‑4.1 mini is the recommended translator. **One OpenRouter key.**
-- Progressive translation previews. Stop cancels queued and active processing immediately, then finishes only the local audio write.
+- Progressive translation previews. Stop cancels queued and active processing, then finishes the local audio write.
 - Original audio, transcript, translation and session metadata saved on your Mac, grouped by date and recording.
 - A quiet API-reported USD subtotal and approximate RUB conversion using a dated CBR rate. Missing prices remain unknown.
 
@@ -25,7 +25,7 @@ The initial use case is an English lecture with Mandarin examples: translate the
 
 ## Get started
 
-**To run:** macOS 14+, a microphone, internet access and your own OpenRouter key with credit. The current packaged build is **arm64 / Apple Silicon**. The interface is currently in Russian; the repository documentation is bilingual.
+**To run:** the deployment target is macOS 14+; the packaged build was checked on macOS 26 only. You need a microphone, internet access and your own OpenRouter key with credit. The current packaged build is **arm64 / Apple Silicon**. The interface is currently in Russian; the repository documentation is bilingual.
 
 1. Get the application from [Releases](https://github.com/JustChimera/Voxtant/releases), or build it below. Move `Voxtant.app` into Applications.
 2. Open the app and click the waveform in the macOS menu bar. Open Settings with the gear.
@@ -58,7 +58,7 @@ English, Mandarin, Russian, German, French, Spanish, Italian, Portuguese, Japane
 
 The API key is stored in **macOS Keychain**, never bundled with the app. During recognition, audio fragments go to OpenRouter and the selected ASR provider; text goes to the selected translation provider through OpenRouter. API usage is billed to your account. The app does not implement its own backend, accounts, telemetry or cloud library. A public CBR request supplies the optional currency reference.
 
-No personal recordings or private evaluation corpus are included in this repository. Screenshots use authored demonstration text. Record with the participants' knowledge and according to the rules that apply to your situation.
+The current source tree excludes personal audio, session exports and raw private evaluation outputs. Screenshots use authored demonstration text. Record with the participants' knowledge and according to the rules that apply to your situation.
 
 Plain TXT/JSON exports can be consumed by your own tools or agents. See [local agent integration](docs/agent-integration.md). No server or MCP service is required.
 
@@ -95,7 +95,7 @@ Audio capture and disk writing run independently of networking. The scheduler ha
 
 ## Honest limits
 
-- This is **short-fragment, near-real-time processing**, not continuous streaming ASR. There is no latency SLA.
+- This is **short-fragment speech processing**, not continuous streaming ASR. There is no latency SLA.
 - Noise, accents, mixed languages and chunk boundaries can produce wrong or missing words. A fluent translation is not proof of a correct transcript.
 - Long 60–90 minute sessions and every microphone/OS/language combination are not certified. An iPhone microphone must first be exposed by macOS Continuity.
 - Stop retains completed text and original audio; unfinished translations are cancelled rather than drained.
