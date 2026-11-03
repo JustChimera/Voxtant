@@ -48,13 +48,14 @@ public struct SessionReport: Codable {
     public var duration: Double
     public var recording: String
     public var segments: [Segment]
+    public var translationSettings: TranslationSettings?
     public var notes: [String] = [
         "Segment timestamps are audio boundaries, not word timestamps.",
         "Latency is measured from the end of a captured chunk to its final displayed translation.",
         "File imports are batch tests; their latency is not a live microphone measurement.",
         "Energy-based speech gating; 1.2-2.8 s non-overlapping chunks, 120 ms pre-roll.",
         "Capture timestamps use the input buffer host clock; older schema v1 used an approximate engine-start clock.",
-        "Pure Chinese bypasses translation; mixed Chinese spans are masked and restored locally.",
+        "Translation follows the session language rules; preserved Chinese spans are masked when distinguishable from Japanese.",
         "ASR WAV copies are peak-normalized to 0.8 with gain capped at 8x; original audio is unchanged.",
         "Costs are reported by the API when available; missing costs are unknown, not zero."
     ]

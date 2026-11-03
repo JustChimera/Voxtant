@@ -1,0 +1,78 @@
+{
+  "version": "authored-translation-terminology-v1",
+  "cases": [
+    {
+      "id": "pronunciation",
+      "text": "Pay attention to pronunciation, not spelling.",
+      "checks": [
+        {
+          "id": "pronunciation",
+          "pattern": "произнош"
+        },
+        {
+          "id": "not-spelling",
+          "pattern": "не.{0,35}(?:написан|орфограф|правопис)"
+        },
+        {
+          "id": "no-untranslated-term",
+          "pattern": "pronunciation|spelling",
+          "forbidden": true
+        }
+      ]
+    },
+    {
+      "id": "measure-word",
+      "text": "A measure word goes between the number and the noun.",
+      "context": "This is a Mandarin grammar lesson.",
+      "checks": [
+        {
+          "id": "classifier-term",
+          "pattern": "сч[её]тн|классификатор"
+        },
+        {
+          "id": "number",
+          "pattern": "числ"
+        },
+        {
+          "id": "noun",
+          "pattern": "существительн"
+        }
+      ]
+    },
+    {
+      "id": "original-meaning",
+      "text": "This is the original meaning of the character 学.",
+      "checks": [
+        {
+          "id": "meaning",
+          "pattern": "значен"
+        },
+        {
+          "id": "original",
+          "pattern": "исходн|первоначальн|оригинальн|изначальн"
+        },
+        {
+          "id": "no-untranslated-term",
+          "pattern": "original meaning",
+          "forbidden": true
+        }
+      ],
+      "preservedHan": "学"
+    },
+    {
+      "id": "grammar-state",
+      "text": "In this sentence, 了 marks a change of state, not past tense.",
+      "checks": [
+        {
+          "id": "state",
+          "pattern": "состояни"
+        },
+        {
+          "id": "not-past",
+          "pattern": "не.{0,35}прошед"
+        }
+      ],
+      "preservedHan": "了"
+    }
+  ]
+}

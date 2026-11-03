@@ -8,6 +8,7 @@ let package = Package(
     targets: [
         .target(name: "LectureCore"),
         .executableTarget(name: "LectureTranslate", dependencies: ["LectureCore"]),
+        .executableTarget(name: "VoxtantEval", dependencies: ["LectureCore"]),
         .testTarget(name: "LectureCoreTests", dependencies: ["LectureCore"])
     ],
     swiftLanguageModes: [.v5]

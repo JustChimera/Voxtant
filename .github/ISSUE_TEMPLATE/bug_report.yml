@@ -1,0 +1,24 @@
+name: Bug / Ошибка
+description: Report a reproducible problem without private recordings or keys.
+body:
+  - type: markdown
+    attributes:
+      value: "Do not attach keys, private audio, transcripts or session JSON. Не прикладывайте приватные данные."
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Problem and expected behavior / Проблема и ожидание
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps with a synthetic example / Шаги с синтетическим примером
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: App version, macOS, Mac architecture, microphone and model IDs
+    validations:
+      required: true

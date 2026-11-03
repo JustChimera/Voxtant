@@ -1,0 +1,36 @@
+VOXTANT 0.1.0 — EXPERIMENTAL / ЭКСПЕРИМЕНТАЛЬНАЯ ВЕРСИЯ
+
+ENGLISH
+1. Drag Voxtant.app into Applications. Requires macOS 14+.
+2. Open Voxtant, click its waveform in the menu bar, then open Settings.
+3. Add your own OpenRouter API key with credit and allow microphone access.
+4. Choose a microphone and press Record. Stop cancels all pending processing.
+
+The arm64 build is for Apple Silicon (M-series Macs). It is ad-hoc signed,
+not Developer ID signed or notarized. If macOS blocks a downloaded copy,
+follow Apple's instructions only if you trust this source:
+https://support.apple.com/102445
+
+Audio/text are processed by OpenRouter and the selected external providers.
+API usage is billed to your own OpenRouter account. Original audio,
+transcripts, translations and metadata are saved on your Mac under
+Desktop/Voxtant Recordings/date/session/. No key is bundled with the app.
+
+РУССКИЙ
+1. Перетащите Voxtant.app в «Программы». Требуется macOS 14+.
+2. Откройте Voxtant, нажмите волну в строке меню, затем шестерёнку настроек.
+3. Добавьте свой ключ OpenRouter с балансом и разрешите доступ к микрофону.
+4. Выберите микрофон и нажмите запись. Stop отменяет оставшуюся обработку.
+
+Сборка arm64 предназначена для Apple Silicon (Mac с чипом M-серии).
+Подпись локальная ad-hoc; Developer ID и нотариализации Apple нет.
+Если macOS блокирует загруженное приложение, следуйте инструкции Apple,
+только если доверяете источнику: https://support.apple.com/102445
+
+Аудио и текст обрабатываются через OpenRouter и выбранных провайдеров.
+API оплачивается с вашего аккаунта OpenRouter. Исходный звук, транскрипция,
+перевод и метаданные сохраняются на Mac в папке «Voxtant Recordings»
+на рабочем столе, с группировкой по дате и сессии. Ключа внутри сборки нет.
+
+Source / Исходники: https://github.com/JustChimera/Voxtant
+License / Лицензия: MIT

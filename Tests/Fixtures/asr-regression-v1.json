@@ -1,0 +1,371 @@
+{
+  "version": "authored-script-v1",
+  "voices": {
+    "en": "Samantha",
+    "zh": "Tingting"
+  },
+  "wordsPerMinute": 170,
+  "joinSilenceSeconds": 0.12,
+  "cases": [
+    {
+      "id": "en-negative",
+      "tags": [
+        "en",
+        "negation"
+      ],
+      "parts": [
+        [
+          "en",
+          "Do not open the window."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "negative-polarity",
+          "kind": "contains",
+          "any": [
+            "do not",
+            "don't"
+          ]
+        },
+        {
+          "id": "object",
+          "kind": "contains",
+          "any": [
+            "open the window"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "en-positive",
+      "tags": [
+        "en",
+        "negation"
+      ],
+      "parts": [
+        [
+          "en",
+          "Open the window."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "positive-action",
+          "kind": "contains",
+          "any": [
+            "open the window"
+          ]
+        },
+        {
+          "id": "no-invented-negation",
+          "kind": "absent",
+          "any": [
+            "not",
+            "don't",
+            "never"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zh-negative",
+      "tags": [
+        "zh",
+        "negation"
+      ],
+      "parts": [
+        [
+          "zh",
+          "我不喝咖啡，我喝茶。"
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "negative-polarity",
+          "kind": "contains",
+          "any": [
+            "不喝咖啡"
+          ]
+        },
+        {
+          "id": "second-clause",
+          "kind": "contains",
+          "any": [
+            "喝茶"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-negative",
+      "tags": [
+        "mixed",
+        "negation"
+      ],
+      "parts": [
+        [
+          "en",
+          "The sentence"
+        ],
+        [
+          "zh",
+          "我不去学校"
+        ],
+        [
+          "en",
+          "means I do not go to school."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "han-negation",
+          "kind": "contains",
+          "any": [
+            "我不去学校",
+            "我不去學校"
+          ]
+        },
+        {
+          "id": "english-negation",
+          "kind": "contains",
+          "any": [
+            "do not go",
+            "don't go"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-vocabulary",
+      "tags": [
+        "mixed",
+        "vocabulary"
+      ],
+      "parts": [
+        [
+          "en",
+          "The word"
+        ],
+        [
+          "zh",
+          "银行"
+        ],
+        [
+          "en",
+          "means bank."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "han-word",
+          "kind": "contains",
+          "any": [
+            "银行",
+            "銀行"
+          ]
+        },
+        {
+          "id": "english-word",
+          "kind": "contains",
+          "any": [
+            "bank"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "en-numbers",
+      "tags": [
+        "en",
+        "numbers"
+      ],
+      "parts": [
+        [
+          "en",
+          "Use twenty five samples, not fifty two."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "positive-number",
+          "kind": "contains",
+          "any": [
+            "twenty five",
+            "25"
+          ]
+        },
+        {
+          "id": "negated-number",
+          "kind": "contains",
+          "any": [
+            "not fifty two",
+            "not 52"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-numbers",
+      "tags": [
+        "mixed",
+        "numbers"
+      ],
+      "parts": [
+        [
+          "en",
+          "There are twenty five students."
+        ],
+        [
+          "zh",
+          "二十五个学生。"
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "english-number",
+          "kind": "contains",
+          "any": [
+            "twenty five",
+            "25"
+          ]
+        },
+        {
+          "id": "han-number",
+          "kind": "contains",
+          "any": [
+            "二十五个学生",
+            "二十五個學生",
+            "25个学生",
+            "25個學生"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zh-repetition",
+      "tags": [
+        "zh",
+        "repetition"
+      ],
+      "parts": [
+        [
+          "zh",
+          "你好。你好。你好。"
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "three-repetitions",
+          "kind": "count",
+          "any": [
+            "你好"
+          ],
+          "count": 3
+        }
+      ]
+    },
+    {
+      "id": "en-repetition",
+      "tags": [
+        "en",
+        "repetition"
+      ],
+      "parts": [
+        [
+          "en",
+          "Very very very important."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "three-repetitions",
+          "kind": "count",
+          "any": [
+            "very"
+          ],
+          "count": 3
+        },
+        {
+          "id": "content-word",
+          "kind": "contains",
+          "any": [
+            "important"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "en-boundary",
+      "tags": [
+        "en",
+        "boundary"
+      ],
+      "parts": [
+        [
+          "en",
+          "The international student studies pronunciation and carefully repeats the unfamiliar vocabulary."
+        ]
+      ],
+      "assertions": [
+        {
+          "id": "long-word-one",
+          "kind": "contains",
+          "any": [
+            "international"
+          ]
+        },
+        {
+          "id": "long-word-two",
+          "kind": "contains",
+          "any": [
+            "pronunciation"
+          ]
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "id": "mixed-vocabulary-quiet",
+      "base": "mixed-vocabulary",
+      "transform": "quiet",
+      "gain": 0.04,
+      "tags": [
+        "quiet"
+      ]
+    },
+    {
+      "id": "mixed-negative-noisy",
+      "base": "mixed-negative",
+      "transform": "noise",
+      "snrDB": 10,
+      "seed": 20261103,
+      "tags": [
+        "noise"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "silence",
+      "seconds": 3,
+      "noiseRMS": 0,
+      "seed": 10,
+      "tags": [
+        "no-speech",
+        "silence"
+      ]
+    },
+    {
+      "id": "noise-only",
+      "seconds": 3,
+      "noiseRMS": 0.01,
+      "seed": 11,
+      "tags": [
+        "no-speech",
+        "noise"
+      ]
+    }
+  ]
+}
